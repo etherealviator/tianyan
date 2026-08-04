@@ -1,7 +1,13 @@
 # 版权与隐私内容
-.reasonix/attachments/
 墨猫书架/
 inbox/
+
+# 附件目录：忽略全部内容，白名单放行天衍提示词本体及其版本备份
+# （提示词版本历史纳入 git 跟踪，与 vault 提交同库可追溯）
+.reasonix/attachments/*
+!.reasonix/attachments/tianyan-prompt.xml
+!.reasonix/attachments/backup/
+!.reasonix/attachments/backup/tianyan-prompt.*.xml
 
 # 桌面缓存元数据
 .reasonix/*.json
