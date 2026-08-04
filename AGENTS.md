@@ -24,7 +24,8 @@
 ## 约束
 
 - **只提交已跟踪目录**：tianyan/、领域/、成果/、流程证据/、反馈/、.reasonix/skills/、.gitignore
-- **不提交**：.reasonix/attachments/（版权+大附件）、墨猫书架/、inbox/（已在 .gitignore）
+- **提示词白名单例外**：`.reasonix/attachments/tianyan-prompt.xml` 与 `backup/tianyan-prompt.*.xml` 已纳入 git 跟踪（版本历史与 vault 同库可追溯）；attachments/ 其余内容（clipboard、大附件）不提交
+- **不提交**：墨猫书架/、inbox/（已在 .gitignore）
 - **git 失败不阻塞主流程**：git 不可用或 commit 失败时，标注"git 提交失败：{原因}"，继续主任务
 - **无改动不空提交**：`git status` 干净时跳过，不用 --allow-empty
 - **敏感改动**（删除用户文件、批量移动）commit 前先展示 `git status --short` 摘要，不静默提交
