@@ -1,7 +1,7 @@
 ---
 name: tianyan-init
 description: 新机器/新平台恢复天衍模式：一次交互完成能力探测→存储后端→vault 脚手架创建或复用→xml 装载→平台映射。已有 vault 迁移与平台切换也用。
-version: 1.2.0
+version: 1.3.0
 ---
 
 # tianyan-init
@@ -34,7 +34,7 @@ version: 1.2.0
 | 平台 | 当前平台名与能力清单（来源：平台能力清单/官方文档/工具调用列表） | 平台名可识别 | 未知平台 → 完成报告标注 |
 | fs | 目标目录可写性 | 实际写入临时文件成功 | 不可写 → 人工接管 |
 | obsidian | 平台 obsidian 集成 + vault 路径存在性 | 集成可调用且 vault 根存在 | 无集成 → 本地目录（分支 A）；集成可用但 vault 不存在 → 按分支 A 创建，建成后提示用户用 obsidian 打开目标根作为新 vault |
-| xml | tianyan-prompt.xml 定位（常见位置：.reasonix/attachments/、backup/、用户指定） | 找到 | 未找到 → 记录缺失并输出获取指引（从原机器 backup/ 或 成果/ 复制），不阻塞后续 |
+| xml | tianyan-prompt.xml 定位（常见位置：core/（仓库标准）、.reasonix/attachments/（旧运行时位置）、用户指定） | 找到 | 未找到 → 记录缺失并输出获取指引（从原机器 core/ 或 成果/ 复制），不阻塞后续 |
 | git | git/gh CLI、credential helper、remote 配置 | git 命令可用 | git 可用无 remote → 本地版本控制；git 不可用 → 跳过 |
 | 子代理 | 平台子代理/并行任务能力 | 平台能力清单声明或实测可用 | 主实例自审 |
 | 搜索 | 平台联网搜索能力 | 平台能力清单声明或实测可用 | AI 联想兜底并显式标注 |
@@ -80,21 +80,22 @@ version: 1.2.0
 ### 阶段 3：隐私分级与 git 初始化（仅 git 远程/共享时触发）
 
 触发：阶段 1 选择 git 远程或任何共享后端。
-1. 推荐共享范围：仅框架资产（tianyan/+领域/+流程证据/ 最小集）——复现必需的最小集，成果/反馈/ 含个人数据；用户可推翻为全库（成果+反馈+领域+tianyan+流程证据 全推远程）。
+1. 推荐共享范围：核心资产（core/ + 领域/ + scripts/ + tianyan/ 白名单 最小集）——复现必需的最小集；反馈/、流程证据/、.reasonix/、backup/ 含个人数据与内部资产，排除（本地保留）；用户可推翻为全库（成果/ 加入共享）。
 2. 写入共享配置（有 vault → vault/tianyan/共享配置.md；仅 fs → 目标根/.tianyan/share-config.md）：范围 + 排除清单。
-3. 按所选范围联动 .gitignore（.gitignore 不存在则先创建，已存在按分支 A 步骤 3 的合并策略处理）：仅框架资产 → 追加排除 成果/、反馈/；全库 → 保持模板默认。追加后校验隐私项（inbox/ 等）已覆盖，未覆盖则提示用户补充后继续。
+3. 按所选范围联动 .gitignore（.gitignore 不存在则先创建，已存在按分支 A 步骤 3 的合并策略处理）：核心资产 → 追加排除 成果/、反馈/、流程证据/；全库 → 保持模板默认。追加后校验隐私项（inbox/ 等）已覆盖，未覆盖则提示用户补充后继续。
 4. git 初始化与首推（隐私分级完成前禁止 push）：git init（复用场景已有仓库则跳过）→ add → 初始 commit → remote add（已有 remote 则跳过）→ push（credential helper 可用则自动推；否则提示用户手动 push，不阻塞其余步骤）。首推前核对推送内容与共享范围一致。
 
 ### 阶段 4：装载与适配
 
-1. **xml 装载**：xml 已在阶段 0 定位；放入平台约定的提示词位置——Reasonix：.reasonix/attachments/tianyan-prompt.xml；其他平台：按其 system prompt 配置位置；无约定位置：输出建议路径，用户确认后放置。未定位到 xml 时，输出缺失指引（从原机器 backup/ 或 成果/ 复制）后继续其余步骤。
+1. **xml 装载**：xml 已在阶段 0 定位；放入平台约定的提示词位置——Reasonix：core/tianyan-prompt.xml（reasonix.toml 的 system_prompt_file 指向）；其他平台：按其 system prompt 配置位置；无约定位置：输出建议路径，用户确认后放置。未定位到 xml 时，输出缺失指引（从原机器 core/ 或 成果/ 复制）后继续其余步骤。
 2. **映射表生成**：将探测结果写入平台映射表（有 vault → vault/tianyan/平台映射.md；仅 fs → 目标根/.tianyan/platform-map.md），格式见「平台映射表」。映射表把 xml 内部的抽象能力名绑定到本平台实际工具——xml 本体不修改。写入采用覆盖写（每次装载重新生成），重复运行幂等。
-3. **完成报告**：能力画像 + xml 装载位置 + 映射表位置 + 缺失能力清单（每项附降级路径）+ 首启指引（如何验证装载成功：跑一遍映射表列出的核心能力；首先读 目标根/tianyan/ 框架文档与 流程证据/_目录规范.md——仅 fs 模式下框架文档位于 目标根/tianyan/）。
+3. **完成报告**：能力画像 + xml 装载位置 + 映射表位置 + 缺失能力清单（每项附降级路径）+ 首启指引（如何验证装载成功：跑一遍映射表列出的核心能力；首先读 目标根/tianyan/ 框架文档与 流程证据/_目录规范.md——仅 fs 模式下框架文档位于 目标根/tianyan/；流程证据/ 为本地审计资产，不进共享范围）。
 
 ## 目录脚手架规格
 
 ```
 <目标根>/
+├── core/          提示词本体（tianyan-prompt.xml）+ skills/（与 xml 同仓）
 ├── 成果/          交付产物迭代
 ├── 反馈/          偏好/纠错/奖赏
 │   ├── 天衍/      天衍自身偏好与已知缺陷
@@ -102,6 +103,7 @@ version: 1.2.0
 ├── 领域/          类型模板 + 维度积累 + 审计模板
 ├── tianyan/       框架文档（有 vault 时承载 平台映射.md、共享配置.md）
 ├── 流程证据/      锻造履历（含 _目录规范.md）
+├── scripts/       校验脚本（validate-prompt.js）
 ├── .tianyan/      本地配置（仅 fs 模式：share-config.md、platform-map.md；git 忽略）
 ├── inbox/         观察记（git 忽略）
 └── .gitignore     模板内置（含 .tianyan/ 排除）
@@ -171,7 +173,7 @@ templates/ 随本 skill 捆绑，模板与落位映射：
 2. 已有 vault：检测到复用提示，不覆盖现有数据，缺失部分补建。
 3. 无 obsidian：降级本地 fs，无报错，完成报告标注「obsidian 不可用」。
 4. 无 git/gh：跳过 git 步骤，不阻塞。
-5. 换机复现：复制 成果/ + tianyan-prompt.xml + skill 本体（随平台技能目录迁移，如 .reasonix/skills/），跑本 skill 即恢复天衍**模式**（skill 定义 + 提示词 + 脚手架）；领域积累/反馈等**数据**恢复需同步对应 vault 目录——模式恢复与数据恢复显式区分。
+5. 换机复现：复制 成果/ + core/tianyan-prompt.xml + core/skills/（skill 随平台技能目录迁移），跑本 skill 即恢复天衍**模式**（skill 定义 + 提示词 + 脚手架）；领域积累/反馈等**数据**恢复需同步对应 vault 目录——模式恢复与数据恢复显式区分。
 6. 本 skill 正文未内联天衍九层锻造/审计/履历全量逻辑。
 7. 重复运行：同一环境再跑一次，走复用/补建路径，不产生重复目录、不覆盖已有数据。
 8. git 远程场景：首次 push 前隐私分级已完成、.gitignore 已联动共享范围，推送内容与范围一致。

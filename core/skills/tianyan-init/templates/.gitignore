@@ -5,12 +5,22 @@ inbox/
 # 本地配置（仅 fs 模式承载共享配置与平台映射，不随共享推送）
 .tianyan/
 
-# 附件目录：忽略全部内容，白名单放行天衍提示词本体及其版本备份
-# （提示词版本历史纳入 git 跟踪，与 vault 提交同库可追溯）
-.reasonix/attachments/*
-!.reasonix/attachments/tianyan-prompt.xml
-!.reasonix/attachments/backup/
-!.reasonix/attachments/backup/tianyan-prompt.*.xml
+# 运行时目录与内部资产（本地保留，不推远程——2026-08 仓库清洗后的共享配置经验）
+.reasonix/
+反馈/
+流程证据/
+
+# tianyan/ 内部演进文档：只保留对外展示白名单
+tianyan/*
+!tianyan/天衍优化清单.md
+!tianyan/天衍优化路线图.md
+!tianyan/天衍架构总览-v0.17.md
+
+# 本机环境配置（含密钥/内网信息/机器本地属性——绝不提交）
+.obsidian/
+reasonix.toml
+.mcp.json
+obsidian-local-cert.pem
 
 # 桌面缓存元数据
 .reasonix/*.json
