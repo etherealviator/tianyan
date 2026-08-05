@@ -61,7 +61,8 @@ if (missing.length) { warn(`顶层标签缺失: ${missing.join(',')}`); errors +
 
 // ---------- 4. 已废除术语残留 ----------
 const DEPRECATED = ['分类器', '判断器', '评估器', '照明', '意图共振', '黄金3条', '老友先导',
-  '三层降级链', 'polarity_extraction', 'item 19', 'item 17', 'item 20', 'item 0'];
+  '三层降级链', 'polarity_extraction', 'item 19', 'item 17', 'item 20', 'item 0',
+  'boundary_with_layer8', '子agent审计'];
 for (const w of DEPRECATED) {
   const n = (src.match(new RegExp(w, 'g')) || []).length;
   if (n) { warn(`已废除术语残留「${w}」×${n}`); errors += n; }
