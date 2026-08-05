@@ -2,7 +2,7 @@
 /**
  * 天衍提示词结构校验器
  * 用法: node scripts/validate-prompt.js [--baseline <file>] [--target <file>]
- * 默认目标: .reasonix/attachments/tianyan-prompt.xml
+ * 默认目标: core/tianyan-prompt.xml
  * 退出码: 0=通过 1=失败
  * 功能: XML配对 / 顶层结构 / 已废除术语残留 / checklist编号连续性 / 版本字段 / 基线回归对比
  */
@@ -13,7 +13,7 @@ const ROOT = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 const targetIdx = args.indexOf('--target');
 const baseIdx = args.indexOf('--baseline');
-const TARGET = targetIdx >= 0 ? args[targetIdx + 1] : path.join(ROOT, '.reasonix', 'attachments', 'tianyan-prompt.xml');
+const TARGET = targetIdx >= 0 ? args[targetIdx + 1] : path.join(ROOT, 'core', 'tianyan-prompt.xml');
 const BASELINE = baseIdx >= 0 ? args[baseIdx + 1] : null;
 
 let errors = 0;

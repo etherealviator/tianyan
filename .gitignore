@@ -2,12 +2,16 @@
 墨猫书架/
 inbox/
 
-# 附件目录：忽略全部内容，白名单放行天衍提示词本体及其版本备份
-# （提示词版本历史纳入 git 跟踪，与 vault 提交同库可追溯）
-.reasonix/attachments/*
-!.reasonix/attachments/tianyan-prompt.xml
-!.reasonix/attachments/backup/
-!.reasonix/attachments/backup/tianyan-prompt.*.xml
+# 运行时目录与内部资产（本地保留，不提交 GitHub）
+.reasonix/
+反馈/
+流程证据/
+
+# tianyan/ 内部演进文档：只保留 3 个对外展示（优化清单/路线图/架构总览）
+tianyan/*
+!tianyan/天衍优化清单.md
+!tianyan/天衍优化路线图.md
+!tianyan/天衍架构总览-v0.17.md
 
 # 桌面缓存元数据
 .reasonix/*.json
@@ -21,5 +25,3 @@ Thumbs.db
 reasonix.toml
 .mcp.json
 obsidian-local-cert.pem
-tianyan/obsidian-mcp-手机接入配置.md
-tianyan/search-mcp-手机接入配置.md

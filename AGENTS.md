@@ -24,7 +24,7 @@
 ## 约束
 
 - **只提交已跟踪目录**：tianyan/、领域/、成果/、流程证据/、反馈/、.reasonix/skills/、.gitignore
-- **提示词白名单例外**：`.reasonix/attachments/tianyan-prompt.xml` 与 `backup/tianyan-prompt.*.xml` 已纳入 git 跟踪（版本历史与 vault 同库可追溯）；attachments/ 其余内容（clipboard、大附件）不提交
+- **提示词白名单例外**：`core/tianyan-prompt.xml` 已纳入 git 跟踪（版本历史与 vault 同库可追溯）；`.reasonix/` 为 Reasonix 运行时目录，整体不提交
 - **不提交**：墨猫书架/、inbox/（已在 .gitignore）
 - **绝不上传**（2026-08-05 泄漏事故后补充——含密钥/内网信息/机器本地属性，已加入 .gitignore）：`.obsidian/`（Obsidian 工作区+插件 data.json，含 API Key 与私钥）、`reasonix.toml`、`.mcp.json`、`obsidian-local-cert.pem`、`tianyan/obsidian-mcp-手机接入配置.md`、`tianyan/search-mcp-手机接入配置.md`。**任何 `git add -A` 前必须确认无上述文件**（`git status --short` 自查）；发现被跟踪立即 `git rm --cached` 并排查历史。
 - **git 失败不阻塞主流程**：git 不可用或 commit 失败时，标注"git 提交失败：{原因}"，继续主任务
