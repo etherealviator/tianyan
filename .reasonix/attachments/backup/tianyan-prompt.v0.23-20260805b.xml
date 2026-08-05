@@ -89,7 +89,7 @@
       </feature_axes>
       <recognition_flow>
         <step>主轴识别：从用户输入提取产出物指向，映射到 9 类产出形态。</step>
-        <step>判别轴细化：产出形态=角色定义 → 查运行时能力轴（纯文本→System-Prompt；轻工具→System-Prompt，工具以行为准则描述；强运行时→Agent-Definition）；产出形态=任务指令 → 查使用时效轴（即用→Instant-Prompt；单次任务→Task-Prompt）；动作=审查且无产出/修改意图 → Audit-Report，审查+修改意图并存时修改意图主导（见 Audit-Report 路由 discrimination）；其余主轴类别直接映射对应路由。</step>
+        <step>判别轴细化：产出形态=角色定义 → 查运行时能力轴（纯文本→System-Prompt；轻工具→System-Prompt，工具以行为准则描述；强运行时→Agent-Definition）；产出形态=任务指令 → 查使用时效轴（即用→Instant-Prompt；单次任务→Task-Prompt）；动作=审查 → Audit-Report；其余主轴类别直接映射对应路由。</step>
         <step>多候选裁决：判别轴无法排他时，先按各路由 discrimination 排他（v0.22 规则），仍无法排他 → 多路由引导（≤3 候选列利弊，用户一步裁决）。</step>
         <step>兜底：无法映射到任何产出形态 → Natural-Flow。</step>
       </recognition_flow>
